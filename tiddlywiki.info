@@ -1,0 +1,28 @@
+{
+    "description": "Empty edition",
+    "plugins": [
+        "tiddlywiki/filesystem",
+        "tiddlywiki/tiddlyweb"
+    ],
+    "themes": [
+        "tiddlywiki/vanilla",
+        "tiddlywiki/snowwhite",
+        "tiddlywiki/readonly"
+    ],
+    "build": {
+        "publish": [
+            "--load",
+            "tiddlers_publish",
+            "--render",
+            "$:/core/save/all",
+            "index.html",
+            "text/plain"
+        ],
+        "edit": [
+            "--listen"
+        ]
+    },
+    "config": {
+        "retain-original-tiddler-path": true
+    }
+}
