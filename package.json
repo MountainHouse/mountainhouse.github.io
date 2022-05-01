@@ -1,7 +1,7 @@
 {
   "name": "mh-wiki",
   "version": "1.0.0",
-  "description": "",
+  "description": "Mountain House wiki based on TiddlyWiki",
   "main": "",
   "scripts": {
     "start": "node ./node_modules/tiddlywiki/tiddlywiki.js . --build edit",
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/MountainHouse/mountainhouse.github.io"
   },
-  "keywords": [],
+  "keywords": ["Mountain House"],
   "author": "Igor Kiselev",
   "license": "BSD-3-Clause",
   "bugs": {
