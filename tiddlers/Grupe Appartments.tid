@@ -4,7 +4,7 @@ tags: Project Grupe Apartments
 title: Grupe Appartments
 type: text/vnd.tiddlywiki
 
-[img[grupe/main.jpg]]
+{{grupe/main.jpg}}
 
 !!! Application info:
 * Parcells: [[209-060-62|https://www.sjmap.org/asrpdf/Current%20Maps/bk209/209-06.pdf]]; 209-060-49 
