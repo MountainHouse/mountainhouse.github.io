@@ -11,9 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/MountainHouse/mountainhouse.github.io"
   },
-  "keywords": [
-    "Mountain House"
-  ],
+  "keywords": ["Mountain House"],
   "author": "Igor Kiselev",
   "license": "BSD-3-Clause",
   "bugs": {
