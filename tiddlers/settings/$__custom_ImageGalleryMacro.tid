@@ -1,0 +1,10 @@
+created: 20220504174118875
+modified: 20220504174639783
+tags: 
+title: $:/custom/ImageGalleryMacro
+type: text/vnd.tiddlywiki
+
+\define prevItem() <$action-setfield $tiddler=<<stateTid>> text={{{[subfilter<__filter__>before<currentItem>] :else[subfilter<filter>last[]] }}} />
+\define nextItem() <$action-setfield $tiddler=<<stateTid>> text={{{[subfilter<__filter__>after<currentItem>] :else[subfilter<filter>first[]] }}} />
+\define setItem() <$action-setfield $tiddler=<<stateTid>> text=<<currentImage>> />
+\define img(src) [img[$src$]]

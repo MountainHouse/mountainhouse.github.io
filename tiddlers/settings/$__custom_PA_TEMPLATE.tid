@@ -1,13 +1,11 @@
 created: 20220502055156922
 list-after: $:/custom/Cover
-modified: 20220502071652576
+modified: 20220502191451127
 tags: $:/tags/ViewTemplate
 title: $:/custom/PA_TEMPLATE
 type: text/vnd.tiddlywiki
 
-<$list filter="[all[current]has[project]]">
-<$list filter="[tag[PA]tag{!!project}]" >
+<$list filter="[all[current]tagging[]tag[PA]]" >
 ''<<currentTiddler>>''
 {{||$:/core/ui/ViewTemplate/body}}
-</$list>
 </$list>
