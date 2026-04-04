@@ -1,0 +1,11 @@
+created: 20260404122900000
+modified: 20260404123800000
+tags: $:/tags/StartupAction
+title: $:/mhwiki/startup/ResetSidebarTabState
+type: text/vnd.tiddlywiki
+
+<$action-setfield $tiddler="$:/state/tab/sidebar" text="$:/mhwiki/ui/SideBar/Content"/>
+<$action-setfield $tiddler="$:/state/tab/sidebar--595412856" text="$:/mhwiki/ui/SideBar/Content"/>
+<$list filter="[prefix[$:/state/tab/sidebar]![[$:/state/tab/sidebar]]![[$:/state/tab/sidebar--595412856]]]" variable="sidebarTab">
+<$action-setfield $tiddler=<<sidebarTab>> text="$:/mhwiki/ui/SideBar/Content"/>
+</$list>

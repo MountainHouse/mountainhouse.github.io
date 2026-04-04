@@ -1,0 +1,9 @@
+caption: Content
+created: 20260404121100000
+list-after: $:/core/ui/SideBar/Open
+modified: 20260404121100000
+tags: $:/tags/SideBar
+title: $:/mhwiki/ui/SideBar/Content
+type: text/vnd.tiddlywiki
+
+{{||Content}}
