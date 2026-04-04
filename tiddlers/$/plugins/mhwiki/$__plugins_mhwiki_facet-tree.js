@@ -61,6 +61,10 @@
 			return ctx.labelCache[title];
 		}
 		var safe = escHtml(title);
+		if(!wiki.tiddlerExists(title) && !wiki.isShadowTiddler(title)) {
+			ctx.labelCache[title] = '<span class="toc-item-muted">' + safe + '</span>';
+			return ctx.labelCache[title];
+		}
 		if(isUnlinkedInToc(wiki,title)) {
 			ctx.labelCache[title] = '<span class="toc-item-muted">' + safe + '</span>';
 			return ctx.labelCache[title];
