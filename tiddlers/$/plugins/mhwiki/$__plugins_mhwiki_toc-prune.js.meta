@@ -1,0 +1,3 @@
+module-type: filteroperator
+title: $:/plugins/mhwiki/toc-prune.js
+type: application/javascript

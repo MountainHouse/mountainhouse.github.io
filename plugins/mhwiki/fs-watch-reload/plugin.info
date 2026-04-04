@@ -1,0 +1,10 @@
+{
+  "title": "$:/plugins/mhwiki/fs-watch-reload",
+  "name": "Filesystem Watch Reload",
+  "description": "Watches the local tiddlers folder in --listen mode and reloads externally edited files into the running wiki.",
+  "author": "MHWiki",
+  "version": "0.1.0",
+  "core-version": ">=5.2.0",
+  "plugin-type": "plugin",
+  "list": "$:/plugins/mhwiki/fs-watch-reload/readme"
+}

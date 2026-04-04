@@ -1,0 +1,20 @@
+tags: $:/tags/Stylesheet
+title: $:/plugins/mhwiki/single-story-mode.css
+type: text/css
+
+/* Single-tiddly mode UI adjustments. */
+.tc-page-view-single
+	.tc-story-river:not(:has(> .tc-tiddler-frame + .tc-tiddler-frame))
+	.tc-tiddler-controls button:has(.tc-image-close-button) {
+	display: none;
+}
+
+.tc-page-view-single
+	.tc-sidebar-tabs-main .tc-tab-buttons button[data-tab-title="$:/core/ui/SideBar/Open"] {
+	display: none;
+}
+
+.tc-page-view-single
+	.tc-sidebar-tabs-main .tc-tab-content > div:has(.tc-sidebar-tab-open) {
+	display: none;
+}

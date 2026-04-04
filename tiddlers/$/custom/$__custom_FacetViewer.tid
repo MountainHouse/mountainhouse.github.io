@@ -1,0 +1,10 @@
+created: 20260404000000000
+list-after: $:/core/ui/ViewTemplate/body
+modified: 20260404000000000
+tags: $:/tags/ViewTemplate
+title: $:/custom/FacetViewer
+type: text/vnd.tiddlywiki
+
+<$list filter="[all[current]has[facet-type]has[facet-vectors]]">
+<$macrocall $name="facet-tree" domain=<<currentTiddler>>/>
+</$list>

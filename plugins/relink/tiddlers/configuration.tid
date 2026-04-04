@@ -1,0 +1,8 @@
+title: $:/plugins/flibbles/relink/configuration
+caption: Relink
+tags: $:/tags/ControlPanel/SettingsTab
+
+\whitespace trim
+<div class="tc-control-panel">
+<<tabs "[all[shadows+tiddlers]tag[$:/tags/flibbles/relink/Configuration]!has[draft.of]]" "$:/plugins/flibbles/relink/ui/configuration/Fields">>
+</div>

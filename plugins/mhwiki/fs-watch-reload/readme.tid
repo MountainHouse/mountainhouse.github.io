@@ -1,0 +1,6 @@
+title: $:/plugins/mhwiki/fs-watch-reload/readme
+type: text/vnd.tiddlywiki
+
+Filesystem watcher for Node.js `--listen` mode.
+
+This plugin reloads changed tiddler files from disk into memory so browser refresh reflects external edits without restarting the server.

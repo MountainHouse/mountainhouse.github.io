@@ -1,0 +1,105 @@
+tags: $:/tags/Macro
+title: $:/plugins/mhwiki/macros/toc-pruned
+type: text/vnd.tiddlywiki
+
+\define toc-open-icon() $:/core/images/down-arrow
+\define toc-closed-icon() $:/core/images/right-arrow
+
+\define toc-caption()
+\whitespace trim
+<span class="tc-toc-caption tc-tiny-gap-left">
+<$set name="tv-wikilinks" value="no">
+  <$transclude field="caption">
+    <$view field="title"/>
+  </$transclude>
+</$set>
+</span>
+\end
+
+\define toc-selective-expandable-pruned-linked(path,sort,itemClassFilter,exclude)
+\whitespace trim
+<$list filter="[all[current]tagging[]!has[draft.of]!title<currentTiddler>$sort$tocprune[]limit[1]] [all[current]has[facet-type]has[facet-vectors]limit[1]] +[limit[1]]" variable="ignore" emptyMessage="<$button class='tc-btn-invisible'>{{$:/core/images/blank}}</$button>">
+  <$reveal type="nomatch" stateTitle=<<toc-state>> text="open">
+    <$button setTitle=<<toc-state>> setTo="open" class="tc-btn-invisible tc-popup-keep">
+      <$transclude tiddler=<<toc-closed-icon>> />
+    </$button>
+  </$reveal>
+  <$reveal type="match" stateTitle=<<toc-state>> text="open">
+    <$button setTitle=<<toc-state>> setTo="close" class="tc-btn-invisible tc-popup-keep">
+      <$transclude tiddler=<<toc-open-icon>> />
+    </$button>
+  </$reveal>
+</$list>
+<$link to={{{ [<currentTiddler>get[target]else<currentTiddler>] }}}><<toc-caption>></$link>
+\end
+
+\define toc-selective-expandable-pruned-unlinked(path,sort,itemClassFilter,exclude)
+\whitespace trim
+<$list filter="[all[current]tagging[]!has[draft.of]!title<currentTiddler>$sort$tocprune[]limit[1]] [all[current]has[facet-type]has[facet-vectors]limit[1]] +[limit[1]]" variable="ignore" emptyMessage="""<$button class="tc-btn-invisible">{{$:/core/images/blank}}</$button><span class="toc-item-muted"><<toc-caption>></span>""">
+  <$reveal type="nomatch" stateTitle=<<toc-state>> text="open">
+    <$button setTitle=<<toc-state>> setTo="open" class="tc-btn-invisible tc-popup-keep">
+      <$transclude tiddler=<<toc-closed-icon>> />
+      <<toc-caption>>
+    </$button>
+  </$reveal>
+  <$reveal type="match" stateTitle=<<toc-state>> text="open">
+    <$button setTitle=<<toc-state>> setTo="close" class="tc-btn-invisible tc-popup-keep">
+      <$transclude tiddler=<<toc-open-icon>> />
+      <<toc-caption>>
+    </$button>
+  </$reveal>
+</$list>
+\end
+
+\define toc-selective-expandable-pruned-item(sort:"",itemClassFilter,exclude,path)
+\whitespace trim
+<$qualify name="toc-state" title={{{ [[$:/state/toc]addsuffix<__path__>addsuffix[-]addsuffix<currentTiddler>] }}}>
+  <$set name="toc-item-class" filter=<<__itemClassFilter__>> emptyValue="toc-item-selected" value="toc-item">
+    <$set name="isUnlinked" filter="[all[current]toc-link[no]] [all[current]field:type[text/vnd.tiddlywiki]!has[text]] [all[current]field:type[text/vnd.tiddlywiki]has[text]get[text]trim[]is[blank]] +[limit[1]] -[all[current]has[facet-type]has[facet-vectors]]" value="yes" emptyValue="no">
+    <$set name="isFacetDomain" filter="[all[current]has[facet-type]has[facet-vectors]limit[1]]" value="yes" emptyValue="no">
+    <$set name="hasChildren" filter="[all[current]tagging[]!has[draft.of]!title<currentTiddler>$sort$tocprune[]limit[1]] [all[current]has[facet-type]has[facet-vectors]limit[1]] +[limit[1]]" value="yes" emptyValue="no">
+    <li class=<<toc-item-class>>>
+      <$list filter="[<isUnlinked>match[yes]]" variable="ignore">
+        <<toc-selective-expandable-pruned-unlinked path:__path__ sort:__sort__ itemClassFilter:__itemClassFilter__ exclude:__exclude__>>
+      </$list>
+      <$list filter="[<isUnlinked>match[no]]" variable="ignore">
+        <<toc-selective-expandable-pruned-linked path:__path__ sort:__sort__ itemClassFilter:__itemClassFilter__ exclude:__exclude__>>
+      </$list>
+
+      <$list filter="[<hasChildren>match[yes]]" variable="ignore">
+        <$reveal type="match" stateTitle=<<toc-state>> text="open">
+          <$list filter="[<isFacetDomain>match[yes]]" variable="ignore" emptyMessage="""<$macrocall $name="toc-selective-expandable-pruned" tag=<<currentTiddler>> sort=<<__sort__>> itemClassFilter=<<__itemClassFilter__>> exclude=<<__exclude__>> path=<<__path__>>/>""">
+            <$macrocall $name="facet-tree" domain=<<currentTiddler>>/>
+          </$list>
+        </$reveal>
+      </$list>
+    </li>
+    </$set>
+    </$set>
+    </$set>
+  </$set>
+</$qualify>
+\end
+
+\define toc-selective-expandable-pruned(tag,sort:"",itemClassFilter,exclude,path)
+\whitespace trim
+<$let __tag__={{{ [<__tag__>is[blank]then<currentTiddler>else<__tag__>] }}} sort=<<__sort__>> itemClassFilter=<<__itemClassFilter__>> path={{{ [<__path__>addsuffix[/]addsuffix<__tag__>] }}}>
+  <$set name="excluded" filter="[subfilter<__exclude__>] [<__tag__>]">
+    <ol class="tc-toc toc-selective-expandable toc-selective-expandable-pruned">
+      <$list filter="[all[shadows+tiddlers]tag<__tag__>!has[draft.of]!title<__tag__>$sort$tocprune[]]" variable="item">
+        <$list filter="[<excluded>match<item>]" variable="ignore">
+        </$list>
+        <$list filter="[<excluded>match<item>]" variable="ignore" emptyMessage="<$tiddler tiddler=<<item>>><$macrocall $name='toc-selective-expandable-pruned-item' sort=<<__sort__>> itemClassFilter=<<__itemClassFilter__>> exclude=<<excluded>> path=<<path>>/></$tiddler>">
+        </$list>
+      </$list>
+    </ol>
+  </$set>
+</$let>
+\end
+
+\procedure facet-tree(domain)
+\whitespace trim
+<$macrocall $name="facet-tree-js" domain=<<domain>>/>
+\end
+
+

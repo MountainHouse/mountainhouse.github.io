@@ -1,0 +1,9 @@
+created: 20220509052323844
+facet-fields: purpose neighborhood builder
+facet-type: Project
+facet-vectors: $:/config/mhwiki/facetvectors/project/by-type $:/config/mhwiki/facetvectors/project/by-neighborhood $:/config/mhwiki/facetvectors/project/by-builder
+modified: 20260404000000000
+tags: TableOfContents
+title: Project
+toc-link: no
+type: text/vnd.tiddlywiki
