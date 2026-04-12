@@ -1,5 +1,6 @@
 created: 20220509052323844
 facet-fields: purpose neighborhood builder
+facet-label-template: $:/config/mhwiki/facetlabels/project/item
 facet-type: Project
 facet-vectors: $:/config/mhwiki/facetvectors/project/by-type $:/config/mhwiki/facetvectors/project/by-neighborhood $:/config/mhwiki/facetvectors/project/by-builder
 modified: 20260404000000000

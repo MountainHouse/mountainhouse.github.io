@@ -56,21 +56,52 @@
 		return false;
 	}
 
-	function renderTitleLabel(ctx,wiki,title) {
-		if(ctx.labelCache[title] !== undefined) {
-			return ctx.labelCache[title];
+	function renderTemplateLabel(ctx,title) {
+		if(ctx.templateLabelCache[title] !== undefined) {
+			return ctx.templateLabelCache[title];
 		}
-		var safe = escHtml(title);
+		if(!ctx.labelTemplateParser) {
+			ctx.templateLabelCache[title] = "";
+			return "";
+		}
+		try {
+			var widgetNode = ctx.wiki.makeWidget(ctx.labelTemplateParser,{
+				parentWidget: ctx.widget,
+				variables: {currentTiddler: title}
+			});
+			var container = $tw.fakeDocument.createElement("div");
+			widgetNode.render(container,null);
+			ctx.templateLabelCache[title] = (container.innerHTML || "").trim();
+			return ctx.templateLabelCache[title];
+		} catch (e) {
+			ctx.templateLabelCache[title] = "";
+			return "";
+		}
+	}
+
+	function renderTitleLabel(ctx,wiki,title,useTemplate) {
+		var cacheKey = (useTemplate ? "template" : "plain") + "\u0000" + title;
+		if(ctx.labelCache[cacheKey] !== undefined) {
+			return ctx.labelCache[cacheKey];
+		}
+		var safeTitle = escHtml(title);
+		var labelMarkup = safeTitle;
+		if(useTemplate) {
+			var templateLabel = renderTemplateLabel(ctx,title);
+			if(templateLabel) {
+				labelMarkup = templateLabel;
+			}
+		}
 		if(!wiki.tiddlerExists(title) && !wiki.isShadowTiddler(title)) {
-			ctx.labelCache[title] = '<span class="toc-item-muted">' + safe + '</span>';
-			return ctx.labelCache[title];
+			ctx.labelCache[cacheKey] = '<span class="toc-item-muted">' + labelMarkup + '</span>';
+			return ctx.labelCache[cacheKey];
 		}
 		if(isUnlinkedInToc(wiki,title)) {
-			ctx.labelCache[title] = '<span class="toc-item-muted">' + safe + '</span>';
-			return ctx.labelCache[title];
+			ctx.labelCache[cacheKey] = '<span class="toc-item-muted">' + labelMarkup + '</span>';
+			return ctx.labelCache[cacheKey];
 		}
-		ctx.labelCache[title] = '<$link to="' + safe + '">' + safe + '</$link>';
-		return ctx.labelCache[title];
+		ctx.labelCache[cacheKey] = '<$link to="' + safeTitle + '">' + labelMarkup + '</$link>';
+		return ctx.labelCache[cacheKey];
 	}
 
 	function renderTocCaption(labelMarkup) {
@@ -130,7 +161,7 @@
 		}
 		var out = [];
 		scope.slice().sort(function(a,b){return a.localeCompare(b);}).forEach(function(title) {
-			out.push('<li class="toc-item">' + renderTitleLabel(ctx,$tw.wiki,title) + '</li>');
+			out.push('<li class="toc-item">' + renderTitleLabel(ctx,$tw.wiki,title,true) + '</li>');
 		});
 		ctx.recordsCache[scopeId] = out.join("\n");
 		return ctx.recordsCache[scopeId];
@@ -175,7 +206,7 @@
 			if(!child.length) { return; }
 			var nextPath = path.concat(["value",axis.field,v]);
 			var macro = makeChildMacroCall(ctx,child,remainingAxes.map(function(a){ return a.field; }),nextPath);
-			out.push(renderExpandable(renderTitleLabel(ctx,wiki,v),macro,makeStateTitle(ctx,nextPath)));
+			out.push(renderExpandable(renderTitleLabel(ctx,wiki,v,false),macro,makeStateTitle(ctx,nextPath)));
 		});
 		if(buckets.hasUndefined) {
 			var undef = buckets.undefinedTitles;
@@ -237,6 +268,11 @@
 		if(!facetType) {
 			return "";
 		}
+		var labelTemplateTitle = (domainTid.getFieldString("facet-label-template") || "").trim();
+		var labelTemplateParser = null;
+		if(labelTemplateTitle && wiki.getTiddler(labelTemplateTitle)) {
+			labelTemplateParser = wiki.parseTiddler(labelTemplateTitle,{parseAsInline: true});
+		}
 		var vectors = parseList(domainTid.getFieldString("facet-vectors"));
 		var fieldAllow = parseList(fieldsParam || "");
 		var allowMap = Object.create(null);
@@ -266,8 +302,12 @@
 			counter: 0,
 			stateRoot: encodeURIComponent(domain) + "/" + encodeURIComponent(currentTiddler),
 			domain: domain,
+			wiki: wiki,
+			widget: this,
+			labelTemplateParser: labelTemplateParser,
 			fieldCache: Object.create(null),
 			labelCache: Object.create(null),
+			templateLabelCache: Object.create(null),
 			bucketCache: Object.create(null),
 			recordsCache: Object.create(null),
 			scopeIds: new WeakMap(),

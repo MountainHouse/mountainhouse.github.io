@@ -1,0 +1,6 @@
+created: 20260412000000000
+modified: 20260412000000000
+title: $:/config/mhwiki/facetlabels/project/item
+type: text/vnd.tiddlywiki
+
+<$view field="title"/><$let builder={{{ [<currentTiddler>get[builder]trim[]] }}} neighborhood={{{ [<currentTiddler>get[neighborhood]trim[]] }}}><$list filter="[<builder>!is[blank]limit[1]]"> by {{{ [<builder>get[caption]else<builder>get[title]else<builder>] }}}</$list><$list filter="[<neighborhood>!is[blank]limit[1]]"> at {{{ [<neighborhood>get[caption]else<neighborhood>get[title]else<neighborhood>] }}}</$list></$let>
